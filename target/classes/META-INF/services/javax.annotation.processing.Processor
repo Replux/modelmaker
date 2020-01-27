@@ -1,4 +1,1 @@
-cn.replux.modelmaker.processor.DataProcessor
-cn.replux.modelmaker.processor.AllArgsConstructorProcessor
-cn.replux.modelmaker.processor.BuilderProcessor
-cn.replux.modelmaker.processor.NoArgsConstructorProcessor
+cn.replux.modelmaker.processor.ModelTemplateProcessor

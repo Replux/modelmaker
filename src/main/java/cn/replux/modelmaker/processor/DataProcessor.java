@@ -34,7 +34,7 @@ public class DataProcessor extends BaseProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        logger.debug("enter DataProcessor");
+        // logger.debug("enter DataProcessor");
         //首先获取被Data注解标记的元素
         Set<? extends Element> set = roundEnv.getElementsAnnotatedWith(Data.class);
 

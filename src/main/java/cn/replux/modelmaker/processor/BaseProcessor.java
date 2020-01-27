@@ -19,7 +19,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
     Messager messager; //用于在编译器打印消息的组件
     JavacTrees trees; //语法树
     TreeMaker treeMaker; //用来构造语法树节点
-    Names names;
+    Names names; //用于创建标识符对象
 
 
     /**

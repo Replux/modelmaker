@@ -73,6 +73,7 @@ class ProcessUtil {
         return false;
     }
 
+
     /**
      * 获取字段的语法树节点的集合
      *
@@ -80,6 +81,20 @@ class ProcessUtil {
      * @return 字段的语法树节点的集合
      */
     static List<JCTree.JCVariableDecl> getJCVariables(JCTree.JCClassDecl jcClass) {
+        ListBuffer<JCTree.JCVariableDecl> jcVariables = new ListBuffer<>();
+
+        //遍历jcClass的所有内部节点，可能是字段，方法等等
+        for (JCTree jcTree : jcClass.defs) {
+            //找出所有set方法节点，并添加
+            if (isValidField(jcTree)) {
+                jcVariables.append((JCTree.JCVariableDecl) jcTree);
+            }
+        }
+
+        return jcVariables.toList();
+    }
+
+    static List<JCTree.JCVariableDecl> getClassName(JCTree.JCClassDecl jcClass) {
         ListBuffer<JCTree.JCVariableDecl> jcVariables = new ListBuffer<>();
 
         //遍历jcClass的所有内部节点，可能是字段，方法等等

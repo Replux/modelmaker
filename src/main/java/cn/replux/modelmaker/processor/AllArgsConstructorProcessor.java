@@ -33,7 +33,7 @@ public class AllArgsConstructorProcessor extends BaseProcessor{
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        logger.debug("enter AllArgsConstructorProcessor");
+        // logger.debug("enter AllArgsConstructorProcessor");
         //首先获取被AllArgsConstructor注解标记的元素
         Set<? extends Element> set = roundEnv.getElementsAnnotatedWith(AllArgsConstructor.class);
 

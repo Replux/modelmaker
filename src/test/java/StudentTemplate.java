@@ -2,10 +2,13 @@ import cn.replux.modelmaker.annotation.FieldMapping;
 import cn.replux.modelmaker.annotation.ModelMaker;
 import cn.replux.modelmaker.annotation.ModelTemplate;
 
+import static cn.replux.modelmaker.FieldMapping.mapping;
+
 @ModelTemplate
 public class StudentTemplate {
 
     // ______________ material ______________
+
     Long id;
     String name;
     int age;
@@ -23,16 +26,11 @@ public class StudentTemplate {
             @FieldMapping(from = "grade", toName = "grade", toType = Integer.class)
     }) void StudentDO(){}
 
-    @ModelMaker(mapper = {
-            @FieldMapping(from = "name", toName = "mingzi", toType = String.class),
-            @FieldMapping(from = "age", toName = "nianling", toType = Integer.class),
-            @FieldMapping(from = "male", toName = "xingbie", toType = Boolean.class),
-    }) void StudentDTO(){}
 
-    @ModelMaker(mapper = {
-            @FieldMapping(from = "name", toType = String.class),
-            @FieldMapping(from = "age", toType = Integer.class),
-            @FieldMapping(from = "male", toType = Boolean.class),
-    }) void StudentVO(){}
+    @ModelMaker(birthPlace = "cn.replux.model")
+    void StudentVO(){
+        String mingzi  = mapping(name,String.class);
+        Long nianling  = mapping(name,Long.class);
+    }
 
 }
