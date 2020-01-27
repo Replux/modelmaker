@@ -6,6 +6,8 @@ import java.lang.annotation.Target;
 
 
 /**
+ * 1.9SNAP-SHOT主要是模仿lombok写个demo以熟悉下JCTREE的API
+ *
  * @author replux(杨哲庆)
  * @since 2020-1-26 22:09:46
  * GitHub: https://github.com/Replux

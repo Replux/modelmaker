@@ -1,6 +1,3 @@
-package cn.replux.modelmaker;
-
-
 import cn.replux.modelmaker.annotation.FieldMapping;
 import cn.replux.modelmaker.annotation.ModelMaker;
 import cn.replux.modelmaker.annotation.ModelTemplate;
