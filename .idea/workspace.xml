@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="493de10d-d005-486d-84f2-b577c70dd7cf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NOTE.md" beforeDir="false" afterPath="$PROJECT_DIR$/NOTE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/processor/ModelTemplateProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/processor/ModelTemplateProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/services/javax.annotation.processing.Processor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/replux/modelmaker/pojo/BirthPlaceAndCharacteristics.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/replux/modelmaker/pojo/FieldDecl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/replux/modelmaker/pojo/FieldDecl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/replux/modelmaker/pojo/ModelDefinition.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/replux/modelmaker/pojo/ModelDefinition.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/replux/modelmaker/processor/ModelTemplateProcessor$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/replux/modelmaker/processor/ModelTemplateProcessor$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/replux/modelmaker/processor/ModelTemplateProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/replux/modelmaker/processor/ModelTemplateProcessor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTE.md" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -44,7 +34,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/processor/ModelTemplateProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="607">
+            <state relative-caret-position="129">
               <caret line="83" column="7" selection-start-line="83" selection-start-column="7" selection-end-line="83" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -500,12 +490,12 @@
       <option name="presentableId" value="Default" />
       <updated>1580103433556</updated>
       <workItem from="1580103435054" duration="22439000" />
-      <workItem from="1580138416842" duration="33373000" />
+      <workItem from="1580138416842" duration="33995000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55812000" />
+    <option name="totallyTimeSpent" value="56434000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -518,7 +508,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27623126" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -537,7 +526,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.50774336" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.50774336" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5005353" side_tool="true" weight="0.53207964" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32853982" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -937,7 +926,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/processor/ModelTemplateProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="607">
+        <state relative-caret-position="129">
           <caret line="83" column="7" selection-start-line="83" selection-start-column="7" selection-end-line="83" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
