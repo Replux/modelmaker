@@ -15,7 +15,7 @@ import javax.lang.model.element.TypeElement;
 import java.util.Set;
 
 
-@SupportedAnnotationTypes("cn.replux.modelmaker.annotation.FieldMapping")
+@SupportedAnnotationTypes("cn.replux.modelmaker.annotation.Operator")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class FieldMappingProcessor extends BaseProcessor {
 

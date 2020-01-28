@@ -1,8 +1,9 @@
+package cn.replux.modelmaker;
+
 import cn.replux.modelmaker.annotation.ModelMaker;
 import cn.replux.modelmaker.annotation.ModelTemplate;
 
-import static cn.replux.modelmaker.Operator.add;
-import static cn.replux.modelmaker.Operator.translate;
+import static cn.replux.modelmaker.Operator.*;
 
 @ModelTemplate
 public class StudentTemplate {
@@ -21,9 +22,10 @@ public class StudentTemplate {
     void StudentDO(){
         translate(name,"name",String.class);
         translate(age,"age",long.class);
-        translate(male,"male",long.class);
-        translate(grade,"grade",long.class);
+
         add("height",Integer.class);
+
+        reduce(grade);
     }
 
 

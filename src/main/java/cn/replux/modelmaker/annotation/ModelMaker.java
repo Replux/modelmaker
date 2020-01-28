@@ -20,6 +20,5 @@ import java.lang.annotation.Target;
 public @interface ModelMaker {
 
     String birthPlace() default "";
-    FieldMapping[] mapper() default {};
-    String[] characteristic() default {"Data"};
+    String[] characteristics() default {"Data"};
 }

@@ -18,7 +18,7 @@ PS: 使用Builder的前提是AllArgs存在
 
 # JCTree
 modelMaker:StudentDO()
-mods:@ModelMaker(birthPlace = "cn.replux.model", characteristic = {"Data", "Builder"}, mapper = {@FieldMapping(from = "name", toName = "name", toType = String.class), @FieldMapping(from = "age", toName = "age", toType = Integer.class), @FieldMapping(from = "male", toName = "male", toType = Boolean.class), @FieldMapping(from = "grade", toName = "grade", toType = Integer.class)})
+mods:@ModelMaker(birthPlace = "cn.replux.model", characteristics = {"Data", "Builder"}, mapper = {@FieldMapping(from = "name", toName = "name", toType = String.class), @FieldMapping(from = "age", toName = "age", toType = Integer.class), @FieldMapping(from = "male", toName = "male", toType = Boolean.class), @FieldMapping(from = "grade", toName = "grade", toType = Integer.class)})
 , 
 restype:void, typarams:[], recvparam:null,params:[],thrown:[],body:{
 }
@@ -37,7 +37,7 @@ mods:@ModelMaker(mapper = {@FieldMapping(from = "name", toType = String.class), 
 
 # experiment2
 modelMaker:StudentDO()
-mods:@ModelMaker(birthPlace = "cn.replux.model", characteristic = {"Data", "Builder"}, mapper = {@FieldMapping(from = "name", toName = "name", toType = String.class), @FieldMapping(from = "age", toName = "age", toType = Integer.class), @FieldMapping(from = "male", toName = "male", toType = Boolean.class), @FieldMapping(from = "grade", toName = "grade", toType = Integer.class)})
+mods:@ModelMaker(birthPlace = "cn.replux.model", characteristics = {"Data", "Builder"}, mapper = {@FieldMapping(from = "name", toName = "name", toType = String.class), @FieldMapping(from = "age", toName = "age", toType = Integer.class), @FieldMapping(from = "male", toName = "male", toType = Boolean.class), @FieldMapping(from = "grade", toName = "grade", toType = Integer.class)})
 , restype:void, typarams:[], recvparam:null,params:[],thrown:[],body:{
 }
 
@@ -49,14 +49,33 @@ mods:@ModelMaker(birthPlace = "cn.replux.model")
 }
 
 # experiment 3
-{cn.yzq.demo.model.StudentTemplate=[Long id, String name, int age, boolean male, int grade]}
->> name:id,vartype:Long
->> name:name,vartype:String
->> name:age,vartype:int
->> name:male,vartype:boolean
->> name:grade,vartype:int
+PS: 构造函数的restype==null
 
+# experiment 4
+14:49:18.444 [main] DEBUG cn.replux.modelmaker.processor.BaseProcessor - enter ModelTemplate
+14:49:18.506 [main] DEBUG cn.replux.modelmaker.processor.BaseProcessor - 
+ annotations1:[@ModelMaker(birthPlace = "cn.replux.model", characteristics = {"Data", "Builder"})]
+14:49:18.507 [main] DEBUG cn.replux.modelmaker.processor.BaseProcessor - 
+ annotations1:[@ModelMaker()]
 
-
+# experiment 5
+ methodDecl:
+@ModelMaker(birthPlace = "cn.replux.model", characteristics = {"Data", "Builder"})
+void StudentDO() {
+    translate(name, "name", String.class);
+    translate(age, "age", long.class);
+    add("height", Integer.class);
+    reduce(grade);
+}
+ lhs:birthPlace,rhs:"cn.replux.model"
+ lhs:characteristics,rhs:{"Data", "Builder"}
+ ___ 
+ methodDecl:
+@ModelMaker()
+void StudentVO() {
+    translate(name, "mingzi", String.class);
+    translate(age, "nianling", long.class);
+    add("height", Integer.class);
+}
 
 

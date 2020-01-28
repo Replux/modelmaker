@@ -1,12 +1,19 @@
 package cn.replux.modelmaker.processor;
 
+import cn.replux.modelmaker.annotation.ModelMaker;
+import cn.replux.modelmaker.pojo.FieldDecl;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import com.sun.tools.javac.util.Name;
 
 import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeKind;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 class ProcessUtil {
@@ -73,6 +80,63 @@ class ProcessUtil {
         return false;
     }
 
+    /**
+     * 判断是否是合法的字段:
+     * 返回类型为void
+     * 注解为@modelMaker
+     *
+     * @param jcTree 语法树节点
+     * @return 是否是合法字段
+     */
+    public static boolean isVoidMethod(JCTree jcTree) {
+        if (JCTree.Kind.METHOD.equals(jcTree.getKind())) {
+            JCTree.JCMethodDecl methodDecl = (JCTree.JCMethodDecl) jcTree;
+            if(methodDecl.restype==null || methodDecl.restype.type==null){
+                return false;
+            }
+            return TypeKind.VOID.equals(methodDecl.restype.type.getKind());
+        }
+        return false;
+    }
+
+    /**
+     * @param jcClass
+     * @return at least return a empty map, any value of the map is not null
+     */
+    public static Map<Name,JCTree.JCAnnotation> getRawModels(JCTree.JCClassDecl jcClass) {
+        Map<Name,JCTree.JCAnnotation> rawModels= new HashMap<>();
+        for (JCTree jcTree : jcClass.defs) {
+            if (isVoidMethod(jcTree)) {
+                JCTree.JCMethodDecl methodDecl = (JCTree.JCMethodDecl) jcTree;
+                for(JCTree.JCAnnotation annotation : methodDecl.mods.annotations){
+                    if(ModelMaker.class.getTypeName().equals(annotation.type.toString())){
+                        rawModels.put(methodDecl.getName(),annotation);
+                    }
+                }
+            }
+        }
+        return rawModels;
+    }
+
+    /**
+     * valid means the method is not only void, but also contain @ModelMakers
+     */
+    public static Set<JCTree.JCMethodDecl> getValidMethodDecl(JCTree.JCClassDecl jcClass) {
+        Set<JCTree.JCMethodDecl> jcMethodDecls = new HashSet<>();
+        for (JCTree jcTree : jcClass.defs) {
+            // 1. is void method
+            if (isVoidMethod(jcTree)) {
+                JCTree.JCMethodDecl methodDecl = (JCTree.JCMethodDecl) jcTree;
+                for(JCTree.JCAnnotation annotation : methodDecl.mods.annotations){
+                    // 2. contain @ModelMaker
+                    if(ModelMaker.class.getTypeName().equals(annotation.type.toString())){
+                        jcMethodDecls.add(methodDecl);
+                    }
+                }
+            }
+        }
+        return jcMethodDecls;
+    }
 
     /**
      * 获取字段的语法树节点的集合
@@ -92,6 +156,46 @@ class ProcessUtil {
         }
 
         return jcVariables.toList();
+    }
+
+    /**
+     * 获取modelTemplate的字段集合
+     *
+     * @param jcClass 类的语法树节点
+     * @return 字段的语法树节点的集合
+     */
+    static List<FieldDecl> getFieldDecls(JCTree.JCClassDecl jcClass) {
+        ListBuffer<FieldDecl> fieldDecls = new ListBuffer<>();
+
+        //遍历jcClass的所有内部节点，可能是字段，方法等等
+        for (JCTree jcTree : jcClass.defs) {
+            //找出所有set方法节点，并添加
+            if (isValidField(jcTree)) {
+                String name = String.valueOf(((JCTree.JCVariableDecl) jcTree).name);
+                String type = String.valueOf(((JCTree.JCVariableDecl) jcTree).vartype);
+                fieldDecls.append(new FieldDecl(name,type));
+            }
+        }
+
+        return fieldDecls.toList();
+    }
+
+    /**
+     * 获取modelTemplate的字段集合
+     *
+     * @param jcClass 类的语法树节点
+     * @return 字段的语法树节点的集合
+     */
+    static List<JCTree.JCMethodDecl> getMethodDecls(JCTree.JCClassDecl jcClass) {
+        ListBuffer<JCTree.JCMethodDecl> jcMethods = new ListBuffer<>();
+
+        //遍历jcClass的所有内部节点，可能是字段，方法等等
+        for (JCTree jcTree : jcClass.defs) {
+            if (isVoidMethod(jcTree)) {
+                jcMethods.append((JCTree.JCMethodDecl) jcTree);
+            }
+        }
+        return jcMethods.toList();
     }
 
     static List<JCTree.JCVariableDecl> getClassName(JCTree.JCClassDecl jcClass) {
