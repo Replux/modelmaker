@@ -1,13 +1,18 @@
+E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\pojo\operation\AddOperation.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\processor\BuilderProcessor.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\annotation\AllArgsConstructor.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\annotation\ModelTemplate.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\processor\BaseProcessor.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\annotation\NoArgsConstructor.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\annotation\Builder.java
+E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\pojo\operation\BaseOperation.java
+E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\pojo\operation\ReduceOperation.java
+E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\pojo\operation\TranslateOperation.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\processor\ModelTemplateProcessor.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\annotation\ModelMaker.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\pojo\FieldDecl.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\processor\FieldMappingProcessor.java
+E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\pojo\operation\OperationalFlag.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\processor\ProcessUtil.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\StudentTemplate.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\processor\DataProcessor.java
@@ -16,5 +21,4 @@ E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\processor\NoArgsCon
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\Operator.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\annotation\Data.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\annotation\FieldMapping.java
-E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\pojo\BirthPlaceAndCharacteristics.java
 E:\javaProject\modelmaker\src\main\java\cn\replux\modelmaker\pojo\ModelDefinition.java

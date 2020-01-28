@@ -4,9 +4,7 @@ package cn.replux.modelmaker.processor;
 import cn.replux.modelmaker.annotation.ModelMaker;
 import cn.replux.modelmaker.annotation.ModelTemplate;
 import cn.replux.modelmaker.pojo.FieldDecl;
-import cn.replux.modelmaker.pojo.ModelDefinition;
-import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.TypeTag;
+import cn.replux.modelmaker.pojo.operation.BaseOperation;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeTranslator;
 import com.sun.tools.javac.util.List;
@@ -59,7 +57,7 @@ public class ModelTemplateProcessor extends BaseProcessor{
                 JCTree.JCExpression characteristics = args.get("characteristics");
                 logger.debug("birthPlace:{},characteristics:{}",
                         birthPlace,characteristics);
-                getScript(methodDecl);
+                getOperations(methodDecl);
             });
 
 
@@ -69,8 +67,28 @@ public class ModelTemplateProcessor extends BaseProcessor{
 
     }
 
-    private static void getScript(JCTree.JCMethodDecl methodDecl) {
+    private static List<BaseOperation> getOperations(JCTree.JCMethodDecl methodDecl) {
+        ListBuffer<BaseOperation> operations= new ListBuffer<>();
+        JCTree.JCBlock body = methodDecl.body;
+        List<JCTree.JCStatement> stats = body.stats;
+        stats.forEach(stat->{
+            JCTree.JCExpression expr = ((JCTree.JCExpressionStatement) stat).expr;
+            if(expr instanceof JCTree.JCMethodInvocation){
+                JCTree.JCMethodInvocation methodInvocation = (JCTree.JCMethodInvocation) expr;
+                logger.debug("methodInvocation:{}",methodInvocation);
+                if(methodInvocation.meth instanceof JCTree.JCIdent){
+                    JCTree.JCIdent operator = (JCTree.JCIdent) methodInvocation.meth;
+                    //TODO: 根据operator来解析args
+                    List<JCTree.JCExpression> args = methodInvocation.args;
+                    args.forEach(arg->{
+                        logger.debug("arg.getClass:{}",arg.getClass());
+                        logger.debug("meth:{},args:{}",methodInvocation.meth,arg);
+                    });
+                }
+            }
 
+        });
+        return operations.toList();
     }
 
     /**
@@ -83,8 +101,11 @@ public class ModelTemplateProcessor extends BaseProcessor{
         annotations.forEach(annotation->{
             if(ModelMaker.class.getTypeName().equals(String.valueOf(annotation.type))){
                 annotation.args.forEach(arg->{
-                    JCTree.JCAssign assign = (JCTree.JCAssign) arg;
-                    map.put(String.valueOf(assign.lhs),assign.rhs);
+                    if(arg instanceof JCTree.JCAssign){
+                        JCTree.JCAssign assign = (JCTree.JCAssign) arg;
+                        map.put(String.valueOf(assign.lhs),assign.rhs);
+                    }
+
                 });
             }
         });
