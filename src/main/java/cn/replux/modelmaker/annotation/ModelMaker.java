@@ -19,6 +19,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 public @interface ModelMaker {
 
-    String birthPlace() default "";
+    String outputPath() default "";
     String[] characteristics() default {"Data"};
 }

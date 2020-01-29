@@ -1,11 +1,15 @@
-package cn.replux.modelmaker.pojo.operation;
+package cn.replux.modelmaker.pojo.ops;
 
-import cn.replux.modelmaker.pojo.operation.BaseOperation;
 
-public class TranslateOperation extends BaseOperation {
+public class TranslateOperation extends Operation {
     private String oldFieldName;
     private String newFieldName;
     private String newFieldType;
+
+    @Override
+    public void assemble(String[] args) {
+
+    }
 
     public String getOldFieldName() {
         return oldFieldName;
@@ -30,4 +34,7 @@ public class TranslateOperation extends BaseOperation {
     public void setNewFieldType(String newFieldType) {
         this.newFieldType = newFieldType;
     }
+
+
+
 }

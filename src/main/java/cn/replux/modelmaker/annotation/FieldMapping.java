@@ -6,10 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.PARAMETER}) // 使用在类上
+@Target({ElementType.PARAMETER,ElementType.LOCAL_VARIABLE}) // 使用在类上
 @Retention(RetentionPolicy.SOURCE)
 public @interface FieldMapping {
-    String from();
-    String toName() default "";
-    Class toType();
+//    String from();
+//    String toName() default "";
+//    Class toType();
 }
