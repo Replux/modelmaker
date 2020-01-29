@@ -1,6 +1,8 @@
 package cn.replux.modelmaker.pojo.ops;
 
 
+import java.util.List;
+
 public abstract class Operation {
     private OperationType flag;
 
@@ -12,5 +14,5 @@ public abstract class Operation {
         this.flag = flag;
     }
 
-    abstract public void assemble(String[] args);
+    abstract void assemble(List<String> args);
 }

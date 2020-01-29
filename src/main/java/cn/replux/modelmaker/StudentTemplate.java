@@ -22,12 +22,10 @@ public class StudentTemplate {
     @ModelMaker(outputPath = "cn.replux.model",
             characteristics = {"Data","Builder"})
     void StudentDO(){
-        @FieldMapping int i;
-
         translate(name,"name","String");
         translate(age,"age","int");
-        add("height","Integer");
-        reduce(grade);
+        //add("height","Integer");
+        //reduce(grade);
     }
 
 
@@ -35,7 +33,7 @@ public class StudentTemplate {
     void StudentVO(){
         Operator.translate(name,"mingzi","java.lang.String");
         cn.replux.modelmaker.Operator.translate(age,"nianling","long");
-        add("height","Integer");
+        //add("height","Integer");
     }
 
 }

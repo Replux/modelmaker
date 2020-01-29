@@ -1,5 +1,7 @@
 package cn.replux.modelmaker.pojo.ops;
 
+import java.util.List;
+
 public class ReduceOperation extends Operation {
     private String fieldName;
 
@@ -14,7 +16,7 @@ public class ReduceOperation extends Operation {
 
 
     @Override
-    public void assemble(String[] args) {
+    public void assemble(List<String> args) {
 
     }
 }

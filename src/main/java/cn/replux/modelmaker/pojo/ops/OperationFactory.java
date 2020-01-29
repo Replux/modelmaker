@@ -1,10 +1,10 @@
 package cn.replux.modelmaker.pojo.ops;
 
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.util.List;
+
+import java.util.List;
 
 public class OperationFactory {
-    public static Operation getOperation(String name, String[] args){
+    public static Operation getOperation(String name, List<String> args){
         try {
             Operation operation;
             switch (OperationType.valueOf(name.toUpperCase())){

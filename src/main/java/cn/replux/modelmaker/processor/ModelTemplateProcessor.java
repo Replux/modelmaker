@@ -3,16 +3,13 @@ package cn.replux.modelmaker.processor;
 
 import cn.replux.modelmaker.annotation.ModelMaker;
 import cn.replux.modelmaker.annotation.ModelTemplate;
-import cn.replux.modelmaker.pojo.FieldDecl;
 import cn.replux.modelmaker.pojo.ModelDefinition;
 import cn.replux.modelmaker.pojo.ops.*;
 import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.SymbolMetadata;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeTranslator;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Name;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -35,8 +32,8 @@ public class ModelTemplateProcessor extends BaseProcessor{
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        // template -> fields
-        Map<String,List<FieldDecl>> materialContainer = new HashMap<>();
+        // template -> fieldDecls
+        Map<String,Map<String,String>> materialContainer = new HashMap<>();
         Set<? extends Element> templates = roundEnv.getElementsAnnotatedWith(ModelTemplate.class);
         //ListBuffer<JCTree.JCClassDecl> jcClassDeclList = new ListBuffer<>();
         Map<String,JCTree.JCClassDecl> classDecls = new HashMap<>();
@@ -74,10 +71,7 @@ public class ModelTemplateProcessor extends BaseProcessor{
 
     private ModelDefinition convertToModelDefinition(String defaultOutputPath,JCTree.JCMethodDecl methodDecl) {
         Map<String,JCTree.JCExpression> annotationArgs = getAnnotationArgs(methodDecl);
-        List<Operation> operations = getOperations(methodDecl);
-        String outputPath = Optional.ofNullable(annotationArgs.get("outputPath"))
-                .map(String::valueOf)
-                .orElse(defaultOutputPath);
+
         java.util.List<String> characteristics = Optional.ofNullable(annotationArgs.get("characteristics")).map(c -> {
             if (c instanceof JCTree.JCNewArray) {
                 JCTree.JCNewArray array = (JCTree.JCNewArray) c;
@@ -94,17 +88,30 @@ public class ModelTemplateProcessor extends BaseProcessor{
                 return new ArrayList<String>();
             }
         }).orElse(new ArrayList<>());
-        return assembleModelDefinition(outputPath,characteristics,operations);
+
+        String outputPath = Optional.ofNullable(annotationArgs.get("outputPath"))
+                .map(String::valueOf)
+                .orElse(defaultOutputPath);
+
+        List<Operation> operations = getOperations(methodDecl);
+        Map<String, String> newFieldDecls = executeOperations(operations);
+
+        return assembleModelDefinition(outputPath,characteristics,newFieldDecls);
+    }
+
+    private Map<String,String> executeOperations(List<Operation> operations) {
+        //TODO:
+        return null;
     }
 
 
-    private ModelDefinition assembleModelDefinition(String outputPath, java.util.List<String> characteristics, List<Operation> operations) {
+    private ModelDefinition assembleModelDefinition(String outputPath,
+                                                    java.util.List<String> characteristics,
+                                                    Map<String, String> newFieldDecls) {
+        //TODO:
         logger.debug("outputPath:{}",outputPath);
         characteristics.forEach(c->{
             logger.debug("characteristic:{}",c);
-        });
-        operations.forEach(op->{
-            logger.debug("operation:{}",op);
         });
         return null;
     }
@@ -126,7 +133,7 @@ public class ModelTemplateProcessor extends BaseProcessor{
 
     //每个methodInvocation对应一个operation
     private static Operation getOperation(JCTree.JCMethodInvocation methodInvocation){
-        String[] args = generalizeArgs(methodInvocation.args);
+        java.util.List<String> args = generalizeArgs(methodInvocation.args);
         if(methodInvocation.meth instanceof JCTree.JCIdent){ // 静态导入方法
             JCTree.JCIdent operator = (JCTree.JCIdent) methodInvocation.meth;
             return OperationFactory.getOperation(String.valueOf(operator.name), args);
@@ -137,20 +144,17 @@ public class ModelTemplateProcessor extends BaseProcessor{
         return null;
     }
 
-    private static String[] generalizeArgs(List<JCTree.JCExpression> args) {
-        //TODO:
-        args.stream().map(arg->{
-            if(arg instanceof JCTree.JCIdent){
+    private static java.util.List<String> generalizeArgs(List<JCTree.JCExpression> args) {
+        return args.stream().map(arg -> {
+            if (arg instanceof JCTree.JCIdent) {
                 JCTree.JCIdent ident = (JCTree.JCIdent) arg;
                 return String.valueOf(ident.name);
-            }else if(arg instanceof JCTree.JCLiteral){
+            } else if (arg instanceof JCTree.JCLiteral) {
                 JCTree.JCLiteral literal = (JCTree.JCLiteral) arg;
                 return String.valueOf(literal.value);
             }
             return String.valueOf(arg);
-        });
-        return new String[0];
-
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -173,13 +177,13 @@ public class ModelTemplateProcessor extends BaseProcessor{
         return map;
     }
 
-    private static void printMaterialContainer(Map<String,List<FieldDecl>> materialContainer){
-        materialContainer.forEach((key,list)->{
-            list.forEach(fieldDecl -> {
-                logger.debug(">>> materialContainer\n modelName:{},\n FieldName:{}\nFieldType:{}",
-                        key,fieldDecl.getName(),fieldDecl.getType());
-            });
-        });
-    }
+//    private static void printMaterialContainer(Map<String,Map<String,String>> materialContainer){
+//        materialContainer.forEach((key,list)->{
+//            list.forEach(fieldDecl -> {
+//                logger.debug(">>> materialContainer\n modelName:{},\n FieldName:{}\nFieldType:{}",
+//                        key,fieldDecl.getName(),fieldDecl.getType());
+//            });
+//        });
+//    }
 
 }

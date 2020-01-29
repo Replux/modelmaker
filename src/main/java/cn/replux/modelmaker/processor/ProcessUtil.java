@@ -1,7 +1,6 @@
 package cn.replux.modelmaker.processor;
 
 import cn.replux.modelmaker.annotation.ModelMaker;
-import cn.replux.modelmaker.pojo.FieldDecl;
 import com.sun.tools.javac.code.Flags;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeMaker;
@@ -164,20 +163,20 @@ class ProcessUtil {
      * @param jcClass 类的语法树节点
      * @return 字段的语法树节点的集合
      */
-    static List<FieldDecl> getFieldDecls(JCTree.JCClassDecl jcClass) {
-        ListBuffer<FieldDecl> fieldDecls = new ListBuffer<>();
-
+    static  Map<String,String> getFieldDecls(JCTree.JCClassDecl jcClass) {
+        // fieldName -> fieldType
+        Map<String,String> fieldDecls = new HashMap<>();
         //遍历jcClass的所有内部节点，可能是字段，方法等等
         for (JCTree jcTree : jcClass.defs) {
             //找出所有set方法节点，并添加
             if (isValidField(jcTree)) {
                 String name = String.valueOf(((JCTree.JCVariableDecl) jcTree).name);
                 String type = String.valueOf(((JCTree.JCVariableDecl) jcTree).vartype);
-                fieldDecls.append(new FieldDecl(name,type));
+                fieldDecls.put(name,type);
             }
         }
 
-        return fieldDecls.toList();
+        return fieldDecls;
     }
 
     /**

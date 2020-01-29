@@ -1,12 +1,14 @@
 package cn.replux.modelmaker.pojo.ops;
 
+import java.util.List;
+
 public class AddOperation extends Operation {
     private String newFieldName;
     private String newFieldType;
 
 
     @Override
-    public void assemble(String[] args) {
+    public void assemble(List<String> args) {
 
     }
 
