@@ -1,6 +1,5 @@
 package cn.replux.modelmaker;
 
-import cn.replux.modelmaker.annotation.FieldMapping;
 import cn.replux.modelmaker.annotation.ModelMaker;
 import cn.replux.modelmaker.annotation.ModelTemplate;
 
@@ -19,11 +18,11 @@ public class StudentTemplate {
 
     // ______________ entities ______________
 
-    @ModelMaker(outputPath = "cn.replux.model",
+    @ModelMaker(packageName = "cn.replux.model",
             characteristics = {"Data","Builder"})
     void StudentDO(){
         translate(name,"name","String");
-        translate(age,"age","int");
+        translate(age,"age","cn.replux.modelmaker.Operator");
         add("height",Integer.class);
         add("height","Integer");
         //reduce(grade);

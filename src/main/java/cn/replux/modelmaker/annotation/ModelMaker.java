@@ -19,6 +19,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 public @interface ModelMaker {
 
-    String outputPath() default "";
+    String packageName() default "";
     String[] characteristics() default {"Data"};
 }

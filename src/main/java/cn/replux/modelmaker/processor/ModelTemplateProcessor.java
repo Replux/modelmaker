@@ -5,18 +5,24 @@ import cn.replux.modelmaker.annotation.ModelMaker;
 import cn.replux.modelmaker.annotation.ModelTemplate;
 import cn.replux.modelmaker.pojo.ModelDefinition;
 import cn.replux.modelmaker.pojo.ops.*;
-import com.sun.tools.javac.code.Symbol;
+import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.FieldSpec;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.TypeSpec;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeTranslator;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
+import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +39,6 @@ public class ModelTemplateProcessor extends BaseProcessor{
         Set<? extends Element> templates = roundEnv.getElementsAnnotatedWith(ModelTemplate.class);
         Map<String,JCTree.JCClassDecl> classDecls = new HashMap<>();
         templates.forEach(template -> {
-
             trees.getTree(template).accept(new TreeTranslator() {
                 @Override
                 public void visitClassDef(JCTree.JCClassDecl jcClass) {
@@ -44,24 +49,54 @@ public class ModelTemplateProcessor extends BaseProcessor{
             });
         });
 
-        try {
-            classDecls.forEach((qualifiedName,jcClass) -> {
-                Set<JCTree.JCMethodDecl> validMethodDecls = getValidMethodDecl(jcClass);
-                validMethodDecls.forEach(methodDecl -> {
-                    String defaultOutputPath = qualifiedName.substring(0, qualifiedName.lastIndexOf("."));
+        doProcess(classDecls,materialContainer);
+        return true;
+    }
 
-                    Map<String, String> fieldDeclsOfTemplate = materialContainer.get(qualifiedName);
-                    ModelDefinition definition = convertToModelDefinition(fieldDeclsOfTemplate,defaultOutputPath,methodDecl);
-                    logger.debug("definition:{}",definition);
-                });
+    private void doProcess(Map<String, JCTree.JCClassDecl> classDecls, Map<String, Map<String, String>> materialContainer) {
+        java.util.List<ModelDefinition> definitions = new ArrayList<>();
+        classDecls.forEach((qualifiedName,jcClass) -> {
+            Set<JCTree.JCMethodDecl> validMethodDecls = getValidMethodDecl(jcClass);
+            validMethodDecls.forEach(methodDecl -> {
+                String defaultOutputPath = qualifiedName.substring(0, qualifiedName.lastIndexOf("."));
+                Map<String, String> fieldDeclsOfTemplate = materialContainer.get(qualifiedName);
+                ModelDefinition definition = convertToModelDefinition(fieldDeclsOfTemplate,defaultOutputPath,methodDecl);
+                definitions.add(definition);
             });
+        });
+
+        try {
+            //由于要创建多个文件，所以这里可能要开多线程统一生产models
+            produceModels(definitions);
         } catch (Exception e) {
-            //TODO: delete trycatch
             logger.debug(e);
         }
-        return true;
+    }
 
+    //未来可能实现并发执行
+    private void produceModels(java.util.List<ModelDefinition> definitions) {
+        definitions.forEach(definition->{
+            String modelName = definition.getName();
+            String packageName = definition.getOutputPath();
 
+            Map<String, String> fieldDecls = definition.getFieldDecls();
+
+            ArrayList<FieldSpec> fieldSpecs = JavaPoetUtil.createFieldSepcs(fieldDecls);
+            //TODO 特性/注解解析
+            TypeSpec typeSpec = TypeSpec.classBuilder(modelName)
+                                        .addModifiers(Modifier.PUBLIC)
+                                        .addAnnotation(AnnotationSpec.builder(Data.class).build())
+                                        .addFields(fieldSpecs)
+                                        .build();
+
+            JavaFile javaFile = JavaFile.builder(packageName, typeSpec).build();
+            try {
+                javaFile.writeTo(this.filer);
+            } catch (IOException e) {
+                logger.debug("produce model fail:"+e);
+            }
+
+        });
     }
 
     private ModelDefinition convertToModelDefinition(Map<String, String> fieldDeclsOfTemplate,
@@ -69,8 +104,14 @@ public class ModelTemplateProcessor extends BaseProcessor{
                                                      JCTree.JCMethodDecl methodDecl) {
         Map<String,JCTree.JCExpression> annotationArgs = getAnnotationArgs(methodDecl);
         java.util.List<String> characteristics = pickListFromJCNewArray(annotationArgs.get("characteristics"));
-        String outputPath = Optional.ofNullable(annotationArgs.get("outputPath"))
-                .map(String::valueOf)
+        String outputPath = Optional.ofNullable(annotationArgs.get("packageName"))
+                .map(literal->{
+                    if(literal instanceof JCTree.JCLiteral){
+                        JCTree.JCLiteral packageName = (JCTree.JCLiteral) literal;
+                        return String.valueOf(packageName.value);
+                    }
+                    return String.valueOf(literal);
+                })
                 .orElse(defaultOutputPath);
 
         List<Operation> operations = getOperations(methodDecl);
@@ -133,7 +174,9 @@ public class ModelTemplateProcessor extends BaseProcessor{
             String modelName,
             String outputPath,
             java.util.List<String> characteristics,
-            Map<String, String> newFieldDecls) {
+            Map<String, String> newFieldDecls
+    ) {
+        //TODO:这里要对各个属性做合法性校验
         ModelDefinition definition = new ModelDefinition();
         definition.setName(modelName);
         definition.setOutputPath(outputPath);
@@ -144,8 +187,7 @@ public class ModelTemplateProcessor extends BaseProcessor{
 
     private static List<Operation> getOperations(JCTree.JCMethodDecl methodDecl) {
         ListBuffer<Operation> operations= new ListBuffer<>();
-        JCTree.JCBlock body = methodDecl.body;
-        List<JCTree.JCStatement> stats = body.stats;
+        List<JCTree.JCStatement> stats = methodDecl.body.stats;
         stats.forEach(stat->{
             JCTree.JCExpression expr = ((JCTree.JCExpressionStatement) stat).expr;
             if(expr instanceof JCTree.JCMethodInvocation){
@@ -192,6 +234,7 @@ public class ModelTemplateProcessor extends BaseProcessor{
         annotations.forEach(annotation->{
             if(ModelMaker.class.getTypeName().equals(String.valueOf(annotation.type))){
                 annotation.args.forEach(arg->{
+                    logger.debug("arg:{}",arg);
                     if(arg instanceof JCTree.JCAssign){
                         JCTree.JCAssign assign = (JCTree.JCAssign) arg;
                         map.put(String.valueOf(assign.lhs),assign.rhs);

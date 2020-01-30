@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 
@@ -20,7 +21,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
     JavacTrees trees; //语法树
     TreeMaker treeMaker; //用来构造语法树节点
     Names names; //用于创建标识符对象
-
+    Filer filer;//用于创建文件
 
     /**
      * 获取一些注解处理器执行处理逻辑时需要用到的一些关键对象
@@ -29,6 +30,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
     @Override
     public final synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
+        this.filer = processingEnv.getFiler();
         this.messager = processingEnv.getMessager();
         this.trees = JavacTrees.instance(processingEnv);
         Context context = ((JavacProcessingEnvironment) processingEnv).getContext();
