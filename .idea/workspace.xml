@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="493de10d-d005-486d-84f2-b577c70dd7cf" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/Operator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/StudentTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/StudentTemplate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/pojo/ModelDefinition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/pojo/ModelDefinition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/pojo/ops/AddOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/pojo/ops/AddOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/pojo/ops/ReduceOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/pojo/ops/ReduceOperation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/processor/ModelTemplateProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/processor/ModelTemplateProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestAPI.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -53,8 +47,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/processor/ModelTemplateProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="639">
-              <caret line="151" column="48" lean-forward="true" selection-start-line="151" selection-start-column="48" selection-end-line="151" selection-end-column="48" />
+            <state relative-caret-position="167">
+              <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1684#2110#0" expanded="true" />
@@ -95,7 +89,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/StudentTemplate.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="382">
-              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+              <caret line="30" selection-start-line="30" selection-end-line="30" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -131,19 +125,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/services/javax.annotation.processing.Processor">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="51" selection-start-column="51" selection-end-column="51" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/pojo/ops/ReduceOperation.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="480">
-              <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+              <caret line="19" column="26" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -412,6 +397,15 @@
               <item name="modelmaker" type="b2602c69:ProjectViewProjectNode" />
               <item name="modelmaker" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="services" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="modelmaker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="modelmaker" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -505,7 +499,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="90927000" />
+    <option name="totallyTimeSpent" value="93032000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -537,7 +531,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.36504424" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.42367256" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5005353" side_tool="true" weight="0.53207964" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32853982" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -874,24 +868,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/services/javax.annotation.processing.Processor">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="51" selection-start-column="51" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/pojo/ops/ReduceOperation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
-          <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+          <caret line="19" column="26" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/StudentTemplate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="382">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -930,10 +917,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/services/javax.annotation.processing.Processor">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="4" selection-start-column="4" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cn/replux/modelmaker/processor/ModelTemplateProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="639">
-          <caret line="151" column="48" lean-forward="true" selection-start-line="151" selection-start-column="48" selection-end-line="151" selection-end-column="48" />
+        <state relative-caret-position="167">
+          <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1684#2110#0" expanded="true" />

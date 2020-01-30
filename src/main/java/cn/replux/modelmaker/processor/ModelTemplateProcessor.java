@@ -17,8 +17,6 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVisitor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,14 +26,11 @@ import static cn.replux.modelmaker.processor.ProcessUtil.*;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class ModelTemplateProcessor extends BaseProcessor{
 
-
-
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         // template -> fieldDecls
         Map<String,Map<String,String>> materialContainer = new HashMap<>();
         Set<? extends Element> templates = roundEnv.getElementsAnnotatedWith(ModelTemplate.class);
-        //ListBuffer<JCTree.JCClassDecl> jcClassDeclList = new ListBuffer<>();
         Map<String,JCTree.JCClassDecl> classDecls = new HashMap<>();
         templates.forEach(template -> {
 
@@ -45,7 +40,6 @@ public class ModelTemplateProcessor extends BaseProcessor{
                     String qualifiedName = String.valueOf(template);
                     classDecls.put(qualifiedName,jcClass);
                     materialContainer.put(qualifiedName,getFieldDecls(jcClass));
-                    //printMaterialContainer(materialContainer);
                 }
             });
         });
@@ -58,6 +52,7 @@ public class ModelTemplateProcessor extends BaseProcessor{
 
                     Map<String, String> fieldDeclsOfTemplate = materialContainer.get(qualifiedName);
                     ModelDefinition definition = convertToModelDefinition(fieldDeclsOfTemplate,defaultOutputPath,methodDecl);
+                    logger.debug("definition:{}",definition);
                 });
             });
         } catch (Exception e) {
@@ -148,8 +143,6 @@ public class ModelTemplateProcessor extends BaseProcessor{
     }
 
     private static List<Operation> getOperations(JCTree.JCMethodDecl methodDecl) {
-//        Symbol.MethodSymbol sym = methodDecl.sym;
-//        logger.debug("methodDecl.sym:{}",sym);
         ListBuffer<Operation> operations= new ListBuffer<>();
         JCTree.JCBlock body = methodDecl.body;
         List<JCTree.JCStatement> stats = body.stats;
@@ -157,8 +150,7 @@ public class ModelTemplateProcessor extends BaseProcessor{
             JCTree.JCExpression expr = ((JCTree.JCExpressionStatement) stat).expr;
             if(expr instanceof JCTree.JCMethodInvocation){
                 Operation operation = getOperation((JCTree.JCMethodInvocation) expr);
-                Optional.ofNullable(operation)
-                        .ifPresent(operations::append);
+                Optional.ofNullable(operation).ifPresent(operations::append);
             }
         });
         return operations.toList();
@@ -209,14 +201,5 @@ public class ModelTemplateProcessor extends BaseProcessor{
         });
         return map;
     }
-
-//    private static void printMaterialContainer(Map<String,Map<String,String>> materialContainer){
-//        materialContainer.forEach((key,list)->{
-//            list.forEach(fieldDecl -> {
-//                logger.debug(">>> materialContainer\n modelName:{},\n FieldName:{}\nFieldType:{}",
-//                        key,fieldDecl.getName(),fieldDecl.getType());
-//            });
-//        });
-//    }
 
 }
