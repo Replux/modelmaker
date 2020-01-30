@@ -38,8 +38,6 @@ public class ModelTemplateProcessor extends BaseProcessor{
         //ListBuffer<JCTree.JCClassDecl> jcClassDeclList = new ListBuffer<>();
         Map<String,JCTree.JCClassDecl> classDecls = new HashMap<>();
         templates.forEach(template -> {
-            Symbol.ClassSymbol element = (Symbol.ClassSymbol) template;
-            logger.debug("element.fullname:{}",element.fullname);
 
             trees.getTree(template).accept(new TreeTranslator() {
                 @Override
@@ -57,7 +55,9 @@ public class ModelTemplateProcessor extends BaseProcessor{
                 Set<JCTree.JCMethodDecl> validMethodDecls = getValidMethodDecl(jcClass);
                 validMethodDecls.forEach(methodDecl -> {
                     String defaultOutputPath = qualifiedName.substring(0, qualifiedName.lastIndexOf("."));
-                    ModelDefinition definition = convertToModelDefinition(defaultOutputPath,methodDecl);
+
+                    Map<String, String> fieldDeclsOfTemplate = materialContainer.get(qualifiedName);
+                    ModelDefinition definition = convertToModelDefinition(fieldDeclsOfTemplate,defaultOutputPath,methodDecl);
                 });
             });
         } catch (Exception e) {
@@ -69,10 +69,24 @@ public class ModelTemplateProcessor extends BaseProcessor{
 
     }
 
-    private ModelDefinition convertToModelDefinition(String defaultOutputPath,JCTree.JCMethodDecl methodDecl) {
+    private ModelDefinition convertToModelDefinition(Map<String, String> fieldDeclsOfTemplate,
+                                                     String defaultOutputPath,
+                                                     JCTree.JCMethodDecl methodDecl) {
         Map<String,JCTree.JCExpression> annotationArgs = getAnnotationArgs(methodDecl);
+        java.util.List<String> characteristics = pickListFromJCNewArray(annotationArgs.get("characteristics"));
+        String outputPath = Optional.ofNullable(annotationArgs.get("outputPath"))
+                .map(String::valueOf)
+                .orElse(defaultOutputPath);
 
-        java.util.List<String> characteristics = Optional.ofNullable(annotationArgs.get("characteristics")).map(c -> {
+        List<Operation> operations = getOperations(methodDecl);
+        String modelName = String.valueOf(methodDecl.getName());
+        Map<String, String> newFieldDecls = executeOperations(fieldDeclsOfTemplate,operations);
+
+        return assembleModelDefinition(modelName,outputPath,characteristics,newFieldDecls);
+    }
+
+    private java.util.List<String> pickListFromJCNewArray(JCTree.JCExpression jcNewArray) {
+        return Optional.ofNullable(jcNewArray).map(c -> {
             if (c instanceof JCTree.JCNewArray) {
                 JCTree.JCNewArray array = (JCTree.JCNewArray) c;
                 return Optional.ofNullable(array.elems).orElse(List.nil())
@@ -88,35 +102,54 @@ public class ModelTemplateProcessor extends BaseProcessor{
                 return new ArrayList<String>();
             }
         }).orElse(new ArrayList<>());
-
-        String outputPath = Optional.ofNullable(annotationArgs.get("outputPath"))
-                .map(String::valueOf)
-                .orElse(defaultOutputPath);
-
-        List<Operation> operations = getOperations(methodDecl);
-        Map<String, String> newFieldDecls = executeOperations(operations);
-
-        return assembleModelDefinition(outputPath,characteristics,newFieldDecls);
     }
 
-    private Map<String,String> executeOperations(List<Operation> operations) {
-        //TODO:
-        return null;
-    }
+    private Map<String,String> executeOperations(Map<String, String> fieldDeclsOfTemplate,List<Operation> operations) {
+        HashMap<String, String> newFieldDecls = new HashMap<>(fieldDeclsOfTemplate);
 
-
-    private ModelDefinition assembleModelDefinition(String outputPath,
-                                                    java.util.List<String> characteristics,
-                                                    Map<String, String> newFieldDecls) {
-        //TODO:
-        logger.debug("outputPath:{}",outputPath);
-        characteristics.forEach(c->{
-            logger.debug("characteristic:{}",c);
+        operations.forEach(op->{
+            if(op instanceof TranslateOperation){
+                TranslateOperation translateOperation = (TranslateOperation) op;
+                String oldFieldName = translateOperation.getOldFieldName();
+                String newFieldName = translateOperation.getNewFieldName();
+                String newFieldType = translateOperation.getNewFieldType();
+                if(oldFieldName.equals(newFieldName)){
+                    newFieldDecls.put(oldFieldName,newFieldType);
+                }else {
+                    newFieldDecls.remove(oldFieldName);
+                    newFieldDecls.put(newFieldName,newFieldType);
+                }
+            }else if(op instanceof AddOperation){
+                AddOperation addOperation = (AddOperation) op;
+                String newFieldName = addOperation.getNewFieldName();
+                String newFieldType = addOperation.getNewFieldType();
+                newFieldDecls.put(newFieldName,newFieldType);
+            }else if(op instanceof ReduceOperation){
+                ReduceOperation reduceOperation = (ReduceOperation) op;
+                String fieldName = reduceOperation.getFieldName();
+                newFieldDecls.remove(fieldName);
+            }
         });
-        return null;
+        newFieldDecls.remove(null);
+        return newFieldDecls;
+    }
+
+    private ModelDefinition assembleModelDefinition(
+            String modelName,
+            String outputPath,
+            java.util.List<String> characteristics,
+            Map<String, String> newFieldDecls) {
+        ModelDefinition definition = new ModelDefinition();
+        definition.setName(modelName);
+        definition.setOutputPath(outputPath);
+        definition.setCharacteristics(characteristics);
+        definition.setFieldDecls(newFieldDecls);
+        return definition;
     }
 
     private static List<Operation> getOperations(JCTree.JCMethodDecl methodDecl) {
+//        Symbol.MethodSymbol sym = methodDecl.sym;
+//        logger.debug("methodDecl.sym:{}",sym);
         ListBuffer<Operation> operations= new ListBuffer<>();
         JCTree.JCBlock body = methodDecl.body;
         List<JCTree.JCStatement> stats = body.stats;

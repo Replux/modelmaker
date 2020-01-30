@@ -17,6 +17,8 @@ public class ReduceOperation extends Operation {
 
     @Override
     public void assemble(List<String> args) {
-
+        if(args.size()>0){
+            fieldName = args.get(0);
+        }
     }
 }

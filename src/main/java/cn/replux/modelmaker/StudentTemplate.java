@@ -24,7 +24,8 @@ public class StudentTemplate {
     void StudentDO(){
         translate(name,"name","String");
         translate(age,"age","int");
-        //add("height","Integer");
+        add("height",Integer.class);
+        add("height","Integer");
         //reduce(grade);
     }
 

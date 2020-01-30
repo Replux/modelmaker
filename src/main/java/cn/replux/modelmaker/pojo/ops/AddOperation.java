@@ -9,7 +9,10 @@ public class AddOperation extends Operation {
 
     @Override
     public void assemble(List<String> args) {
-
+        if(args.size()==2){
+            newFieldName = args.get(0);
+            newFieldType = args.get(1);
+        }
     }
 
     public String getNewFieldName() {

@@ -7,6 +7,9 @@ public class Operator {
     public static <T>void add(String additionalField,String clzName){
     }
 
+    public static <T>void add(String additionalField,Class<T> clz){
+    }
+
     public static void reduce(Object srcField){
     }
 }
